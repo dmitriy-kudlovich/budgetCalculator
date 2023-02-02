@@ -1,42 +1,46 @@
 export default class View {
   constructor(data) {
-    this.budgetValue = document.querySelector("#budget-value");
-    this.totalInc = document.querySelector("#totalInc");
-    this.totalIncPercentage = document.querySelector("#totalIncPercentage");
-    this.totalExp = document.querySelector("#totalExp");
-    this.totalExpPercentage = document.querySelector("#totalExpPercentage");
-    this.intputType = document.querySelector("#input__type");
-    this.inputDescription = document.querySelector("#input__description");
-    this.inputValue = document.querySelector("#input__value");
-    this.submitBtn = document.querySelector("#submit-btn");
-    this.incomeList = document.querySelector("#income__list");
-    this.expensesList = document.querySelector("#expenses__list");
-
     this.renderTotals(data);
   }
 
+  elements = {
+    budgetValue: document.querySelector("#budget-value"),
+    totalInc: document.querySelector("#totalInc"),
+    totalIncPercentage: document.querySelector("#totalIncPercentage"),
+    totalExp: document.querySelector("#totalExp"),
+    totalExpPercentage: document.querySelector("#totalExpPercentage"),
+    budgetForm: document.querySelector("#budget-form"),
+    intputType: document.querySelector("#input__type"),
+    inputDescription: document.querySelector("#input__description"),
+    inputValue: document.querySelector("#input__value"),
+    submitBtn: document.querySelector("#submit-btn"),
+    budgetSection: document.querySelector("#budgetSection"),
+    incomeList: document.querySelector("#income__list"),
+    expensesList: document.querySelector("#expenses__list"),
+  };
+
   getInput() {
     if (
-      this.inputDescription.value == "" ||
-      this.inputValue.value <= 0 ||
-      isNaN(this.inputValue.value)
+      this.elements.inputDescription.value == "" ||
+      this.elements.inputValue.value <= 0 ||
+      isNaN(this.elements.inputValue.value)
     ) {
       alert("Введите описание и сумму больше нуля");
       return false;
     }
 
     return {
-      type: this.intputType.value,
-      desc: this.inputDescription.value,
-      val: +this.inputValue.value,
+      type: this.elements.intputType.value,
+      desc: this.elements.inputDescription.value,
+      val: +this.elements.inputValue.value,
     };
   }
 
-  renderItem(data, id) {
+  renderItem(data, budget) {
     let html;
 
     if (data.type == "inc") {
-      html = `<li id="${data.type}_${id}" class="budget-list__item item item--income">
+      html = `<li id="${data.id}" class="budget-list__item item item--income">
                 <div class="item__title">${data.desc}</div>
                 <div class="item__right">
                     <div class="item__amount">+ ${data.val}</div>
@@ -48,16 +52,16 @@ export default class View {
                     </button>
                 </div>
               </li>`;
-      this.incomeList.insertAdjacentHTML("beforeend", html);
+      this.elements.incomeList.insertAdjacentHTML("beforeend", html);
     } else {
-      html = `<li id="${data.type}_${id}" class="budget-list__item item item--expense">
+      html = `<li id="${data.id}" class="budget-list__item item item--expense">
                 <div class="item__title">${data.desc}</div>
                 <div class="item__right">
                     <div class="item__amount">
                         - ${data.val}
                         <div class="item__badge">
                             <div class="badge badge--dark">
-                                15%
+                                
                             </div>
                         </div>
                     </div>
@@ -66,23 +70,28 @@ export default class View {
                     </button>
                 </div>
             </li>`;
-      this.expensesList.insertAdjacentHTML("beforeend", html);
+      this.elements.expensesList.insertAdjacentHTML("beforeend", html);
     }
+
+    this.calcExpRatio(budget);
   }
 
-  renderTotals(data) {
-    this.totalInc.textContent = "+ " + data.incTotal;
-    this.totalExp.textContent = "- " + data.expTotal;
-    this.totalExpPercentage.textContent = +data.expPercentage + "%";
-    this.budgetValue.textContent = +data.incTotal - +data.expTotal;
-
+  removeItem(obj, data) {
+    obj.closest("li").remove();
     this.calcExpRatio(data);
   }
 
+  renderTotals(data) {
+    this.elements.totalInc.textContent = "+ " + data.incTotal;
+    this.elements.totalExp.textContent = "- " + data.expTotal;
+    this.elements.totalExpPercentage.textContent = +data.expPercentage + "%";
+    this.elements.budgetValue.textContent = +data.total;
+  }
+
   clearInputs() {
-    this.inputDescription.value = "";
-    this.inputValue.value = "";
-    this.inputDescription.focus();
+    this.elements.inputDescription.value = "";
+    this.elements.inputValue.value = "";
+    this.elements.inputDescription.focus();
   }
 
   calcExpRatio(data) {
@@ -90,25 +99,10 @@ export default class View {
       return false;
     }
 
-    let expItems = document.querySelectorAll(".item--expense .item__amount");
+    let expItems = document.querySelectorAll(".item--expense .badge--dark");
 
-    expItems.forEach((e) => {
-      let totalExpCurrent = +this.totalExp.textContent
-        .trim()
-        .split(" ")
-        .join("");
-
-      let out = e.children[0].children[0];
-      let rez =
-        (+e.firstChild.textContent.trim().split(" ").join("") /
-          totalExpCurrent) *
-        100;
-
-      if (rez == 100) {
-        out.textContent = rez + "%";
-      } else {
-        out.textContent = rez.toFixed(1) + "%";
-      }
+    expItems.forEach((elem, index) => {
+      elem.textContent = data.exp[index].share + "%";
     });
   }
 }
