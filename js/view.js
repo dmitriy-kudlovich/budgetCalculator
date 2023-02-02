@@ -26,7 +26,7 @@ export default class View {
     let now = new Date();
     let months = [
       "январь",
-      "яевраль",
+      "февраль",
       "март",
       "апрель",
       "май",
