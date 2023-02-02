@@ -1,9 +1,12 @@
 export default class View {
   constructor(data) {
     this.renderTotals(data);
+    this.setDate();
   }
 
   elements = {
+    month: document.querySelector("#month"),
+    year: document.querySelector("#year"),
     budgetValue: document.querySelector("#budget-value"),
     totalInc: document.querySelector("#totalInc"),
     totalIncPercentage: document.querySelector("#totalIncPercentage"),
@@ -19,11 +22,42 @@ export default class View {
     expensesList: document.querySelector("#expenses__list"),
   };
 
+  getDate() {
+    let now = new Date();
+    let months = [
+      "январь",
+      "яевраль",
+      "март",
+      "апрель",
+      "май",
+      "июнь",
+      "июль",
+      "август",
+      "сентябрь",
+      "октябрь",
+      "ноябрь",
+      "декабрь",
+    ];
+    let currentMonth = now.getMonth();
+
+    let currentDate = {
+      year: now.getFullYear(),
+      month: months[currentMonth],
+    };
+
+    return currentDate;
+  }
+
+  setDate() {
+    month.textContent = this.getDate().month;
+    year.textContent = this.getDate().year;
+  }
+
   getInput() {
     if (
       this.elements.inputDescription.value == "" ||
       this.elements.inputValue.value <= 0 ||
-      isNaN(this.elements.inputValue.value)
+      isNaN(+this.elements.inputValue.value.split(",").join("."))
     ) {
       alert("Введите описание и сумму больше нуля");
       return false;
@@ -32,18 +66,40 @@ export default class View {
     return {
       type: this.elements.intputType.value,
       desc: this.elements.inputDescription.value,
-      val: +this.elements.inputValue.value,
+      val: (+this.elements.inputValue.value.split(",").join(".")).toFixed(2),
     };
+  }
+
+  formatNumber(initNum) {
+    let numFormated = "";
+    let num = String(initNum).split(".")[0];
+
+    for (let i = 0; i < num.length / 3; i++) {
+      numFormated =
+        " " +
+        num.substring(num.length - 3 * (i + 1), num.length - 3 * i) +
+        numFormated;
+    }
+
+    numFormated = numFormated.split("");
+    numFormated.shift();
+    numFormated = numFormated.join("");
+
+    if (initNum % 1 != 0) {
+      numFormated = numFormated + "." + String(initNum).split(".")[1];
+    }
+    return numFormated;
   }
 
   renderItem(data, budget) {
     let html;
+    let value = this.formatNumber(data.val);
 
     if (data.type == "inc") {
       html = `<li id="${data.id}" class="budget-list__item item item--income">
                 <div class="item__title">${data.desc}</div>
                 <div class="item__right">
-                    <div class="item__amount">+ ${data.val}</div>
+                    <div class="item__amount">+ ${value}</div>
                     <button class="item__remove">
                         <img
                             src="./img/circle-green.svg"
@@ -58,7 +114,7 @@ export default class View {
                 <div class="item__title">${data.desc}</div>
                 <div class="item__right">
                     <div class="item__amount">
-                        - ${data.val}
+                        - ${value}
                         <div class="item__badge">
                             <div class="badge badge--dark">
                                 
@@ -82,10 +138,12 @@ export default class View {
   }
 
   renderTotals(data) {
-    this.elements.totalInc.textContent = "+ " + data.incTotal;
-    this.elements.totalExp.textContent = "- " + data.expTotal;
+    this.elements.totalInc.textContent =
+      "+ " + this.formatNumber(+data.incTotal.toFixed(2));
+    this.elements.totalExp.textContent =
+      "- " + this.formatNumber(+data.expTotal.toFixed(2));
     this.elements.totalExpPercentage.textContent = +data.expPercentage + "%";
-    this.elements.budgetValue.textContent = +data.total;
+    this.elements.budgetValue.textContent = this.formatNumber(+data.total);
   }
 
   clearInputs() {

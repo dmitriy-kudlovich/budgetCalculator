@@ -16,7 +16,7 @@ export default class Model {
         id: data.type + "_" + this.generateID(data),
         type: data.type,
         desc: data.desc,
-        val: data.val,
+        val: +data.val,
       };
     }
 
@@ -24,7 +24,7 @@ export default class Model {
       id: data.type + "_" + this.generateID(data),
       type: data.type,
       desc: data.desc,
-      val: data.val,
+      val: +data.val,
       share: 0,
     };
   }
@@ -33,7 +33,6 @@ export default class Model {
     if (this.budgetData.exp.length == 1) {
       this.budgetData.exp[0].share = 100;
     } else {
-      console.log("hey");
       this.budgetData.exp.forEach((elem) => {
         elem.share = +((elem.val / this.budgetData.expTotal) * 100).toFixed(1);
       });
@@ -108,31 +107,31 @@ export default class Model {
 
   calcTotals() {
     let incomes = this.budgetData.inc.map((elem) => {
-      return elem.val;
+      return +elem.val;
     });
     let expenses = this.budgetData.exp.map((elem) => {
-      return elem.val;
+      return +elem.val;
     });
 
     if (incomes.length > 0) {
-      this.budgetData.incTotal = incomes.reduce(
-        (accum, current) => accum + current,
-        0
-      );
+      this.budgetData.incTotal = +incomes
+        .reduce((accum, current) => accum + current, 0)
+        .toFixed(2);
     } else {
       this.budgetData.incTotal = 0;
     }
 
     if (expenses.length > 0) {
-      this.budgetData.expTotal = expenses.reduce(
-        (accum, current) => accum + current,
-        0
-      );
+      this.budgetData.expTotal = +expenses
+        .reduce((accum, current) => accum + current, 0)
+        .toFixed(2);
     } else {
       this.budgetData.expTotal = 0;
     }
 
-    this.budgetData.total = this.budgetData.incTotal - this.budgetData.expTotal;
+    this.budgetData.total = +(
+      this.budgetData.incTotal - this.budgetData.expTotal
+    ).toFixed(2);
   }
 
   calcExpPercentage() {
