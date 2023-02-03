@@ -25,18 +25,18 @@ export default class View {
   getDate() {
     let now = new Date();
     let months = [
-      "январь",
-      "февраль",
-      "март",
-      "апрель",
-      "май",
-      "июнь",
-      "июль",
-      "август",
-      "сентябрь",
-      "октябрь",
-      "ноябрь",
-      "декабрь",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     let currentMonth = now.getMonth();
 

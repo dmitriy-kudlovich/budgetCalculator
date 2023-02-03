@@ -5,14 +5,14 @@ function CreateData(type, desc, val) {
 }
 
 let data = [
-  new CreateData("inc", "Зарплата", 100000),
-  new CreateData("inc", "Фриланс", 50000),
-  new CreateData("inc", "Сдача квартиры", 30000),
-  new CreateData("inc", "Инвестиции", 1000),
-  new CreateData("exp", "Коммуналка", 9000),
-  new CreateData("exp", "Еда", 30000),
-  new CreateData("exp", "Оплата проезда", 2000),
-  new CreateData("exp", "Оплата обучения", 10000),
+  new CreateData("inc", "Wage", 100000),
+  new CreateData("inc", "Freelance", 50000),
+  new CreateData("inc", "Flat lending", 30000),
+  new CreateData("inc", "Invest", 1000),
+  new CreateData("exp", "Biil for flat", 9000),
+  new CreateData("exp", "Food", 30000),
+  new CreateData("exp", "Payment for transport", 2000),
+  new CreateData("exp", "Study", 10000),
 ];
 
 function getRandomNumber() {

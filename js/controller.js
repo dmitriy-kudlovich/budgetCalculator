@@ -37,5 +37,3 @@ view.elements.budgetSection.addEventListener("click", (e) => {
     console.log(model.budgetData);
   }
 });
-
-console.log(view.getDate());

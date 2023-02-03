@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Бюджет</title>
+    <title>Budget</title>
     <link rel="stylesheet" href="css/main.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
@@ -13,21 +13,21 @@
   <body>
     <header class="header">
       <div class="header__title">
-        Бюджет за
-        <span id="month">Март</span>
-        <span id="year">2020</span>
+        Budget for
+        <span id="month"></span>
+        <span id="year"></span>
       </div>
       <div class="header__value" id="budget-value"></div>
 
       <div class="header__info info-box info-box--income">
-        <div class="info-box__title">Доходы</div>
+        <div class="info-box__title">Incomes</div>
         <div class="info-box__right">
           <div class="info-box__value" id="totalInc"></div>
           <div class="info-box__percents" id="totalIncPercentage"></div>
         </div>
       </div>
       <div class="header__info info-box info-box--expenses">
-        <div class="info-box__title">расходы</div>
+        <div class="info-box__title">Expenses</div>
         <div class="info-box__right">
           <div class="info-box__value" id="totalExp"></div>
           <div class="info-box__percents">
@@ -62,7 +62,7 @@
           placeholder="Сумма"
         />
         <button id="submit-btn" class="form__button">
-          Добавить
+          Add
           <img
             class="form__button-icon"
             src="./img/check-square.svg"
@@ -76,11 +76,11 @@
     <!-- Budget table -->
     <section class="budget-section" id="budgetSection">
       <div class="budget__col">
-        <h2 class="title title--income">Доходы</h2>
+        <h2 class="title title--income">Incomes</h2>
         <ul id="income__list" class="budget-list"></ul>
       </div>
       <div class="budget__col">
-        <h2 class="title title--expenses">Расходы</h2>
+        <h2 class="title title--expenses">Expenses</h2>
         <ul id="expenses__list" class="budget-list"></ul>
       </div>
     </section>
